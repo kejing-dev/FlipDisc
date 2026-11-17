@@ -122,13 +122,13 @@ internal fun StopSlider(index: Int, labels: List<String>, tag: String, onChange:
     Column(modifier) {
         Slider(
             value = v,
+            modifier = Modifier.fillMaxWidth().height(48.dp),
             onValueChange = { x -> v = x },
             onValueChangeFinished = {
                 val k = kotlin.math.round(v).toInt().coerceIn(0, stops - 1)
                 v = k.toFloat()
                 current(k)
             },
-            modifier = Modifier.fillMaxWidth().height(48.dp),
             valueRange = 0f..(stops - 1).toFloat(),
         )
         // label cells: half-width at the ends, full in between, so each label sits under its stop

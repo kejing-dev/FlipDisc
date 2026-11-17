@@ -97,6 +97,7 @@ fun ControlWindow() {
     }
     // The game decides the page at its milestones: first run -> rules, setup or a game -> play.
     LaunchedEffect(state.phase) {
+        if (!Ui.pagePicked && state.phase != Phase.LOADING) { Ui.pagePicked = true; if (state.phase != Phase.WELCOME) Ui.page = Page.PLAY }
         when (state.phase) {
             Phase.WELCOME -> Ui.page = Page.RULES
             Phase.SETUP -> Ui.page = Page.PLAY
@@ -130,6 +131,31 @@ fun ControlWindow() {
     )
     androidx.compose.runtime.key(settings.language) { ControlTabBar(tabs) }
 }
+
+/**
+ * A page whose content block is measured (D44 blank <= 25 % of the window height): logs
+ * `BLANK <tag> content=<dp> window=<dp> blank=<%>` with blank = (window - content block) / window.
+ * [centered] pages sit in the middle; the others start at the top.
+ */
+@Composable
+private fun PageColumn(tag: String, centered: Boolean, gap: Int = 16, content: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit) {
+    val density = androidx.compose.ui.platform.LocalDensity.current
+    Box(Modifier.fillMaxSize(), contentAlignment = if (centered) Alignment.Center else Alignment.TopCenter) {
+        Column(
+            Modifier.fillMaxWidth().onSizeChanged { sz ->
+                with(density) {
+                    val c = sz.height.toDp().value
+                    Log.i(TAG, "BLANK $tag content=${c.toInt()} window=$WINDOW_H blank=${"%.1f".format((WINDOW_H - c) / WINDOW_H * 100)}%")
+                }
+            },
+            verticalArrangement = Arrangement.spacedBy(gap.dp),
+            content = content,
+        )
+    }
+}
+
+/** Control window height (dp), see Main.kt: 552 (the TabBar is its own window above, not inside). */
+private const val WINDOW_H = 552f
 
 // ------------------------------------------------------------------ shared words
 
@@ -229,14 +255,14 @@ private fun PlayPage(state: PlayState, settings: Settings, graph: Graph) {
 /** S00: the app picture, the name, one line and a spinner, centred (design panels.loading). */
 @Composable
 private fun LoadingPage() {
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        AppPicture(Modifier.size(240.dp))
+    PageColumn("loading", centered = true, gap = 0) {
+        AppPicture(Modifier.size(300.dp).align(Alignment.CenterHorizontally))
         Spacer(Modifier.height(20.dp))
-        Txt(stringResource(R.string.app_name), "loading/name", style = PicoTheme.typography.headlineSmall)
+        Txt(stringResource(R.string.app_name), "loading/name", style = PicoTheme.typography.headlineSmall, modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(Modifier.height(8.dp))
-        Txt(stringResource(R.string.loading_line), "loading/line", style = PicoTheme.typography.bodyLarge, color = FlipColors.InkSecondary)
+        Txt(stringResource(R.string.loading_line), "loading/line", style = PicoTheme.typography.bodyLarge, color = FlipColors.InkSecondary, modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(Modifier.height(20.dp))
-        CircularProgressIndicator(modifier = Modifier.size(36.dp))
+        CircularProgressIndicator(modifier = Modifier.size(36.dp).align(Alignment.CenterHorizontally))
     }
 }
 
@@ -258,13 +284,15 @@ private fun AppPicture(modifier: Modifier) {
 private fun SetupPage(state: PlayState, settings: Settings, graph: Graph) {
     val setup = settings.lastSetup
     fun set(change: (GameSetup) -> GameSetup) = graph.settings.update { it.copy(lastSetup = change(it.lastSetup)) }
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)) {
+    PageColumn("setup-${setup.mode}", centered = true) {
+        // gate:allow button-gap label above its own segment control (one control, not side-by-side buttons)
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Txt(stringResource(R.string.setup_opponent), "setup/opponent", style = PicoTheme.typography.labelLarge, color = FlipColors.InkSecondary)
+            // gate:allow tabs-segment same-page option (computer / two players), not page navigation
             Segments(listOf(Mode.AI to stringResource(R.string.setup_ai), Mode.TWO_PLAYER to stringResource(R.string.setup_2p)), setup.mode, "setup/opponent", { m -> set { it.copy(mode = m) } }, Modifier.fillMaxWidth())
         }
         if (setup.mode == Mode.AI) {
-            Card(Modifier.fillMaxWidth().height(148.dp)) {
+            Card(Modifier.fillMaxWidth().height(156.dp)) {
                 Column(Modifier.padding(horizontal = 20.dp, vertical = 12.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Txt(stringResource(R.string.setup_level) + " " + setup.level, "setup/level-n", style = PicoTheme.typography.labelLarge, color = FlipColors.InkSecondary)
@@ -275,8 +303,10 @@ private fun SetupPage(state: PlayState, settings: Settings, graph: Graph) {
                     StopSlider(setup.level - 1, (1..6).map { "$it" }, "setup/level-slider", { k -> set { it.copy(level = k + 1) } }, Modifier.fillMaxWidth())
                 }
             }
+            // gate:allow button-gap label above its own segment control (one control, not side-by-side buttons)
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Txt(stringResource(R.string.setup_color), "setup/color", style = PicoTheme.typography.labelLarge, color = FlipColors.InkSecondary)
+                // gate:allow tabs-segment same-page option (black / white / random), not page navigation
                 Segments(
                     listOf(SidePick.BLACK to stringResource(R.string.setup_black), SidePick.WHITE to stringResource(R.string.setup_white), SidePick.RANDOM to stringResource(R.string.setup_random)),
                     setup.side, "setup/color", { s -> set { it.copy(side = s) } }, Modifier.fillMaxWidth(),
@@ -290,6 +320,7 @@ private fun SetupPage(state: PlayState, settings: Settings, graph: Graph) {
                         Txt(stringResource(R.string.setup_2p_title), "setup/2p-title", style = PicoTheme.typography.titleLarge, maxLines = 2)
                     }
                     Txt(stringResource(R.string.setup_2p_note), "setup/2p-note", style = PicoTheme.typography.bodyLarge, maxLines = 3)
+                    // gate:allow button-gap two colour dots + a note, nothing clickable
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                         DiscDot(Board.BLACK, 22.dp); DiscDot(Board.WHITE, 22.dp)
                         Txt(stringResource(R.string.setup_2p_rule), "setup/2p-rule", style = PicoTheme.typography.bodyMedium, color = FlipColors.InkSecondary, maxLines = 2)
@@ -309,7 +340,7 @@ private fun SetupPage(state: PlayState, settings: Settings, graph: Graph) {
 @Composable
 private fun GamePage(state: PlayState, settings: Settings, graph: Graph) {
     val flow = graph.flow
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    PageColumn("game", centered = true) {
         ScoreBlock(state)
         StatusCard(state)
         val hintLabel = if (state.hintBusy) stringResource(R.string.play_hint_working) else stringResource(R.string.play_hint)
@@ -398,8 +429,8 @@ private fun StatusCard(state: PlayState) {
 @Composable
 private fun ResultPage(state: PlayState, graph: Graph) {
     val r = state.result ?: return
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)) {
-        Card(Modifier.fillMaxWidth().height(256.dp)) {
+    PageColumn("result", centered = true) {
+        Card(Modifier.fillMaxWidth().height(280.dp)) {
             Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Txt(resultHeadline(state), "result/title", style = PicoTheme.typography.headlineSmall.copy(fontSize = 34.sp, fontWeight = FontWeight.Bold))
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -431,14 +462,14 @@ private fun ConfirmCard(kind: ConfirmKind, state: PlayState, graph: Graph) {
         ConfirmKind.UNDO_2P -> Triple(stringResource(R.string.confirm_undo_t, asker), stringResource(R.string.confirm_undo_b, sideName(state.toMove)), stringResource(R.string.confirm_undo_y) to stringResource(R.string.confirm_undo_n))
     }
     val icon = when (kind) { ConfirmKind.EXIT -> R.drawable.ic_logout; ConfirmKind.NEW -> R.drawable.ic_add; ConfirmKind.RESET -> R.drawable.ic_restart_alt; ConfirmKind.UNDO_2P -> R.drawable.ic_undo }
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(Modifier.size(140.dp).clip(CircleShape).background(FlipColors.PrimaryContainer), contentAlignment = Alignment.Center) {
-            Icon(painter = painterResource(icon), contentDescription = null, modifier = Modifier.size(72.dp), tint = FlipColors.OnPrimaryContainer)
+    PageColumn("confirm-${kind.name}", centered = true, gap = 0) {
+        Box(Modifier.size(176.dp).align(Alignment.CenterHorizontally).clip(CircleShape).background(FlipColors.PrimaryContainer), contentAlignment = Alignment.Center) {
+            Icon(painter = painterResource(icon), contentDescription = null, modifier = Modifier.size(80.dp), tint = FlipColors.OnPrimaryContainer)
         }
-        Spacer(Modifier.height(16.dp))
-        Txt(title, "confirm/${kind.name}/title", style = PicoTheme.typography.titleLarge, align = TextAlign.Center, maxLines = 2)
+        Spacer(Modifier.height(20.dp))
+        Txt(title, "confirm/${kind.name}/title", style = PicoTheme.typography.titleLarge, align = TextAlign.Center, maxLines = 2, modifier = Modifier.fillMaxWidth())
         Spacer(Modifier.height(8.dp))
-        Txt(body, "confirm/${kind.name}/body", style = PicoTheme.typography.bodyLarge, color = FlipColors.InkSecondary, align = TextAlign.Center, maxLines = 2)
+        Txt(body, "confirm/${kind.name}/body", style = PicoTheme.typography.bodyLarge, color = FlipColors.InkSecondary, align = TextAlign.Center, maxLines = 2, modifier = Modifier.fillMaxWidth())
         Spacer(Modifier.height(24.dp))
         PrimaryButton(labels.first, icon, "confirm/yes", onClick = {
             if (kind == ConfirmKind.EXIT) graph.window.exitAction?.invoke() ?: run { graph.flow.confirm(); exitApp(context, navigator, graph) } else graph.flow.confirm()
@@ -454,16 +485,17 @@ private fun ConfirmCard(kind: ConfirmKind, state: PlayState, graph: Graph) {
 private fun RulesPage(state: PlayState, graph: Graph) {
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
         // same-page option (rules / how to play), not page navigation
+        // gate:allow tabs-segment same-page view switch (rules / how to play) inside the Rules tab, not page navigation
         Segments(listOf(0 to stringResource(R.string.rules_seg_rules), 1 to stringResource(R.string.rules_seg_how)), Ui.rulesView, "rules/view", { Ui.rulesView = it }, Modifier.fillMaxWidth())
         if (Ui.rulesView == 0) {
             RulesPanels()
             Txt(stringResource(R.string.rules_mistakes), "rules/mistakes", style = PicoTheme.typography.titleMedium)
             val m = listOf(R.string.mistake_1, R.string.mistake_2, R.string.mistake_3, R.string.mistake_4).map { stringResource(it) }
             for (row in 0..1) {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     for (col in 0..1) {
-                        Card(Modifier.weight(1f).height(80.dp)) {
-                            Txt(m[row * 2 + col], "rules/mistake", style = PicoTheme.typography.bodyMedium, maxLines = 3, modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp))
+                        Card(Modifier.weight(1f).height(72.dp)) {
+                            Txt(m[row * 2 + col], "rules/mistake", style = PicoTheme.typography.bodySmall, maxLines = 3, modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp))
                         }
                     }
                 }
@@ -483,8 +515,8 @@ private fun RulesPanels() {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         listOf(R.string.rules_panel_1, R.string.rules_panel_2, R.string.rules_panel_3).forEachIndexed { i, caption ->
             Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Canvas(Modifier.fillMaxWidth().height(96.dp)) { drawRulePanel(i) }
-                Txt(stringResource(caption), "rules/panel", style = PicoTheme.typography.labelLarge, align = TextAlign.Center, maxLines = 2)
+                Canvas(Modifier.fillMaxWidth().height(72.dp)) { drawRulePanel(i) }
+                Txt(stringResource(caption), "rules/panel", style = PicoTheme.typography.labelMedium, align = TextAlign.Center, maxLines = 2)
             }
         }
     }
@@ -554,7 +586,7 @@ private fun HowRow(icon: Int, label: String, hand: String, ctrl: String?) {
 @Composable
 private fun SettingsPage(settings: Settings, graph: Graph) {
     fun upd(change: (Settings) -> Settings) = graph.settings.update(change)
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    PageColumn("settings", centered = true) {
         Column(Modifier.fillMaxWidth().height(100.dp)) {
             Txt(stringResource(R.string.set_volume), "settings/volume", style = PicoTheme.typography.titleMedium)
             StopSlider(
@@ -563,6 +595,7 @@ private fun SettingsPage(settings: Settings, graph: Graph) {
                 Modifier.fillMaxWidth(),
             )
         }
+        // gate:allow button-gap title, side-view picture and one slider stacked (one control)
         Column(Modifier.fillMaxWidth().height(220.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Txt(stringResource(R.string.set_tilt), "settings/tilt", style = PicoTheme.typography.titleMedium)
             TiltPicture(settings.tilt, Modifier.fillMaxWidth().height(96.dp))
@@ -595,19 +628,23 @@ private fun TiltPicture(tilt: Int, modifier: Modifier) {
 
 @Composable
 private fun MorePage(settings: Settings, graph: Graph) {
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    PageColumn("more", centered = true, gap = 24) {
         SecondaryButton("‹ " + stringResource(R.string.more_back), R.drawable.ic_back, "more/back", onClick = { Ui.moreOpen = false })
+        // gate:allow button-gap label above its own segment control (one control)
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Txt(stringResource(R.string.more_lang), "more/lang", style = PicoTheme.typography.titleMedium)
+            // gate:allow tabs-segment same-page option (language), not page navigation
             Segments(
                 listOf(Language.SYSTEM to stringResource(R.string.lang_system), Language.ZH to stringResource(R.string.lang_zh), Language.EN to stringResource(R.string.lang_en)),
                 settings.language, "more/lang", { l -> graph.settings.update { it.copy(language = l) } }, Modifier.fillMaxWidth(),
             )
         }
+        // gate:allow button-gap one button with its explanation line under it
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             SecondaryButton(stringResource(R.string.more_reopen), R.drawable.ic_open_in_new, "more/reopen", onClick = { graph.window.recall() }, modifier = Modifier.fillMaxWidth())
             Txt(stringResource(R.string.more_reopen_note), "more/reopen-note", style = PicoTheme.typography.bodySmall, color = FlipColors.InkSecondary, maxLines = 2)
         }
+        // gate:allow button-gap one button with its explanation line under it
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             SecondaryButton(stringResource(R.string.more_reset), R.drawable.ic_restart_alt, "more/reset", onClick = { graph.flow.requestConfirm(ConfirmKind.RESET) }, modifier = Modifier.fillMaxWidth())
             Txt(stringResource(R.string.more_reset_note), "more/reset-note", style = PicoTheme.typography.bodySmall, color = FlipColors.InkSecondary, maxLines = 2)

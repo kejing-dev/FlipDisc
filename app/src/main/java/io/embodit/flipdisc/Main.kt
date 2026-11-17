@@ -16,7 +16,7 @@ import io.embodit.flipdisc.ui.theme.FlipTheme
 
 /**
  * Two surfaces in Shared Space (design-package windowModel volume_plus_control_window): the board volume
- * (default container, 0.94 x 0.80 x 0.88 m from the manifest) and the control window (Planar 560 x 600 dp, fixed size so
+ * (default container, 0.94 x 0.80 x 0.88 m from the manifest) and the control window (Planar 560 x 552 dp, fixed size so
  * text is never squeezed) placed to its right by the system.
  */
 fun mainApp(scope: SpatialAppScope) =
@@ -27,7 +27,7 @@ fun mainApp(scope: SpatialAppScope) =
         WindowContainer(
             Containers.CONTROL,
             form = Form.Planar,
-            defaultSize = WindowContainerSize(width = 560.dp, height = 600.dp),
+            defaultSize = WindowContainerSize(width = 560.dp, height = 552.dp),
             // First open and every reopen: beside the board volume (profile D44 2026-11-05: Shared Space has no "bring it in
             // front"; Placement.none() does not follow the head and lands on top of the board).
             // Debug builds can reopen it below / left of the board (`panelat`) so the emulator's narrow default view frames the
@@ -39,7 +39,7 @@ fun mainApp(scope: SpatialAppScope) =
             },
         ) {
             FlipTheme {
-                Box(Modifier.windowConstraints(minWidth = 560.dp, minHeight = 600.dp, maxWidth = 560.dp, maxHeight = 600.dp)) { ControlWindow() }
+                Box(Modifier.windowConstraints(minWidth = 560.dp, minHeight = 552.dp, maxWidth = 560.dp, maxHeight = 552.dp)) { ControlWindow() }
             }
         }
     }

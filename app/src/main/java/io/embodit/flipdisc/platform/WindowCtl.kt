@@ -115,6 +115,7 @@ class WindowCtl {
         }
         val provider = hmd ?: return null
         if (provider.state != DataProvider.State.STARTED) return null
+        // gate:allow head-pose LevelGate only: wait for a level head before opening the window (D9); never aims, places or selects
         val pose = runCatching { provider.latestData?.hmdPose }.getOrNull() ?: return null
         val q = pose.rotation
         val p = pose.position
