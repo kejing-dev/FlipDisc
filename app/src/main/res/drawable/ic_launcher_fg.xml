@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Flip Disc launcher foreground (tools/build_icon.py draws the same artwork for the PICO layered icon). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:strokeColor="#FF2A6645" android:strokeWidth="1.6" android:pathData="M14,30H94M14,54H94M14,78H94M30,14V94M54,14V94M78,14V94" />
+    <path android:fillColor="#FF1B1B1D" android:pathData="M67.00,31.48A26,26 0 0,0 41.00,76.52Z" />
+    <path android:fillColor="#FFEDE6D6" android:pathData="M67.00,31.48A26,26 0 0,1 41.00,76.52Z" />
+    <path android:fillColor="#FF55585C" android:pathData="M65.35,30.53L68.65,32.43L42.65,77.47L39.35,75.57Z" />
+</vector>

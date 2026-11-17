@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">黑白棋</string>
+
+    <string name="tab_play">下棋</string>
+    <string name="tab_rules">规则</string>
+    <string name="tab_settings">设置</string>
+
+    <string name="loading_line">正在摆棋盘…</string>
+    <string name="tag_ready">棋摆好了，开一局吧</string>
+    <string name="level_hint">平视前方，面板就会打开</string>
+    <string name="open_panel">打开面板</string>
+
+    <!-- setup -->
+    <string name="setup_opponent">对手</string>
+    <string name="setup_ai">电脑</string>
+    <string name="setup_2p">两个人</string>
+    <string name="setup_color">你执</string>
+    <string name="setup_black">黑（先下）</string>
+    <string name="setup_white">白</string>
+    <string name="setup_random">随机</string>
+    <string name="setup_level">档位</string>
+    <string name="setup_2p_title">双人同机，一台头显</string>
+    <string name="setup_2p_note">两个人轮流戴头显。黑方先下，下完把头显递过去。</string>
+    <string name="setup_2p_rule">只有轮到的一方能从自己的棋槽拿子。</string>
+    <string name="setup_start">开始</string>
+
+    <string name="level_1">刚上手</string>
+    <string name="level_2">邻桌</string>
+    <string name="level_3">棋友</string>
+    <string name="level_4">老手</string>
+    <string name="level_5">高手</string>
+    <string name="level_6">大师</string>
+    <string name="blurb_1">经常走错，拿来练手</string>
+    <string name="blurb_2">知道角值钱，别的随缘</string>
+    <string name="blurb_3">周末下两盘的水平</string>
+    <string name="blurb_4">会算几步，会抢边</string>
+    <string name="blurb_5">不给角，还会憋你的步</string>
+    <string name="blurb_6">最后十几格算到底</string>
+
+    <!-- play -->
+    <string name="play_you">你</string>
+    <string name="play_computer">电脑 · %1$s</string>
+    <string name="side_black">黑方</string>
+    <string name="side_white">白方</string>
+    <string name="play_your_move">轮到你</string>
+    <string name="play_their_move">轮到对方</string>
+    <string name="play_thinking">对方在想…</string>
+    <string name="play_flipping">翻面中…</string>
+    <string name="turn_black">轮到黑方</string>
+    <string name="turn_white">轮到白方</string>
+    <string name="play_hint">提示一步</string>
+    <string name="play_hint_working">正在算…</string>
+    <string name="play_undo">悔棋</string>
+    <string name="play_mute">静音</string>
+    <string name="play_unmute">开声音</string>
+    <string name="play_new">新开一局</string>
+
+    <string name="status_turn_tip">%1$s：%2$s</string>
+    <string name="tag_drag_tip">拖一枚到亮圈上，或直接点亮圈</string>
+    <string name="tag_no_flip">这格夹不到子</string>
+    <string name="tag_occupied">这格有子了</string>
+
+    <string name="pass_you">你没棋可下，轮到对方。</string>
+    <string name="pass_them">对方没棋可下，你接着下。</string>
+    <string name="pass_2p">%1$s没棋可下，%2$s继续</string>
+
+    <string name="hint_sure">下 %1$s，算到底你多 %2$d 子。</string>
+    <string name="hint_sure_2p">下 %1$s，算到底%3$s多 %2$d 子。</string>
+    <string name="hint_sure_draw">下 %1$s，算到底是平局。</string>
+    <string name="hint_unsure">试试 %1$s：眼下看着最好，但没算到底。</string>
+    <string name="hint_lost">这盘追不回了。下 %1$s 输得最少，差 %2$d 子。</string>
+    <string name="hint_tag_sure">提示 %1$s · 算到底多 %2$d 子</string>
+    <string name="hint_tag_draw">提示 %1$s · 算到底是平局</string>
+    <string name="hint_tag_unsure">提示 %1$s · 没算到底</string>
+    <string name="hint_tag_lost">提示 %1$s · 最少也差 %2$d 子</string>
+
+    <!-- result -->
+    <string name="result_win">你赢了</string>
+    <string name="result_lose">你输了</string>
+    <string name="result_draw">平局</string>
+    <string name="result_black_wins">黑方赢了</string>
+    <string name="result_white_wins">白方赢了</string>
+    <string name="result_line">%1$s，%2$d : %3$d。</string>
+    <string name="result_full">盘下满了。</string>
+    <string name="result_no_moves">两边都没棋了。</string>
+    <string name="result_moves">共 %1$d 步</string>
+    <string name="result_again">再来一局</string>
+    <string name="result_change">换对手</string>
+
+    <!-- rules -->
+    <string name="rules_seg_rules">规则</string>
+    <string name="rules_seg_how">怎么操作</string>
+    <string name="rules_panel_1">夹住就翻</string>
+    <string name="rules_panel_2">亮着的点才能下</string>
+    <string name="rules_panel_3">最后谁的子多谁赢</string>
+    <string name="rules_mistakes">新手常错</string>
+    <string name="mistake_1">角最值钱。角上的子永远翻不回去。</string>
+    <string name="mistake_2">角旁边那格先别碰，下了对方多半拿角。</string>
+    <string name="mistake_3">中盘子少一点不吃亏，能下的点多才是本事。</string>
+    <string name="mistake_4">没棋可下会自动跳过，不算输。</string>
+    <string name="rules_ok">知道了，开一局</string>
+    <string name="rules_back">回去下棋</string>
+
+    <string name="how_to_title">手和手柄都能下</string>
+    <string name="how_to_tap_label">点亮圈</string>
+    <string name="how_to_tap_hand">看着亮圈捏一下，或用手的射线指着捏合</string>
+    <string name="how_to_tap_ctrl">手柄：射线指着亮圈，按扳机</string>
+    <string name="how_to_drag_label">拖一枚子</string>
+    <string name="how_to_drag_hand">捏住自己的棋槽，拖到亮圈上松开</string>
+    <string name="how_to_drag_ctrl">手柄：扳机按住棋槽拖过去，松开扳机落子</string>
+    <string name="how_to_panel_label">挪面板</string>
+    <string name="how_to_panel_hand">用面板下面的系统把手</string>
+    <string name="how_to_angle_label">棋盘角度</string>
+    <string name="how_to_angle_hand">设置里五档，20° 到 90°</string>
+
+    <!-- settings -->
+    <string name="set_volume">音量</string>
+    <string name="vol_off">静音</string>
+    <string name="vol_low">小</string>
+    <string name="vol_mid">中</string>
+    <string name="vol_high">大</string>
+    <string name="set_tilt">棋盘角度</string>
+    <string name="set_more">更多设置</string>
+    <string name="set_exit">退出应用</string>
+
+    <string name="more_back">设置</string>
+    <string name="more_lang">语言</string>
+    <string name="lang_system">跟随系统</string>
+    <string name="lang_zh">中文</string>
+    <string name="lang_en">English</string>
+    <string name="more_reopen">重开控制窗</string>
+    <string name="more_reopen_note">面板会在棋盘旁边重新打开。用面板下面的系统把手，把它挪到顺手的地方。</string>
+    <string name="more_reset">重置进度</string>
+    <string name="more_reset_note">删掉没下完的这盘，下次打开重新看规则。</string>
+    <string name="more_about">黑白棋 %1$s · 音效 CC0 · 图标 Material Symbols</string>
+
+    <!-- confirm cards -->
+    <string name="confirm_exit_t">退出黑白棋？</string>
+    <string name="confirm_exit_b">这盘已经存好，下次打开接着下。</string>
+    <string name="confirm_exit_y">退出</string>
+    <string name="confirm_exit_n">接着下</string>
+    <string name="confirm_new_t">这盘不下了？</string>
+    <string name="confirm_new_b">现在的局面不会保留。</string>
+    <string name="confirm_new_y">新开一局</string>
+    <string name="confirm_new_n">接着下</string>
+    <string name="confirm_reset_t">重置进度？</string>
+    <string name="confirm_reset_b">没下完的这盘会删掉。音量、语言、棋盘角度不变。</string>
+    <string name="confirm_reset_y">重置</string>
+    <string name="confirm_reset_n">不重置</string>
+    <string name="confirm_undo_t">%1$s要悔一步</string>
+    <string name="confirm_undo_b">%1$s同意吗？</string>
+    <string name="confirm_undo_y">同意悔棋</string>
+    <string name="confirm_undo_n">不悔</string>
+</resources>

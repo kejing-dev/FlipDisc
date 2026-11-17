@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Flip Disc</string>
+
+    <string name="tab_play">Play</string>
+    <string name="tab_rules">Rules</string>
+    <string name="tab_settings">Settings</string>
+
+    <string name="loading_line">Setting up the board…</string>
+    <string name="tag_ready">Ready when you are</string>
+    <string name="level_hint">Look straight ahead to open the panel</string>
+    <string name="open_panel">Open panel</string>
+
+    <!-- setup -->
+    <string name="setup_opponent">Opponent</string>
+    <string name="setup_ai">Computer</string>
+    <string name="setup_2p">Two players</string>
+    <string name="setup_color">You play</string>
+    <string name="setup_black">Black (first)</string>
+    <string name="setup_white">White</string>
+    <string name="setup_random">Random</string>
+    <string name="setup_level">Level</string>
+    <string name="setup_2p_title">Two players, one headset</string>
+    <string name="setup_2p_note">Take turns wearing the headset. Black goes first, then pass it over.</string>
+    <string name="setup_2p_rule">Only the side to move can take a disc from its tray.</string>
+    <string name="setup_start">Start</string>
+
+    <string name="level_1">Rookie</string>
+    <string name="level_2">Next desk</string>
+    <string name="level_3">Club night</string>
+    <string name="level_4">Veteran</string>
+    <string name="level_5">Sharp</string>
+    <string name="level_6">Master</string>
+    <string name="blurb_1">Makes mistakes. Good for warming up</string>
+    <string name="blurb_2">Knows corners matter, not much else</string>
+    <string name="blurb_3">A regular weekend player</string>
+    <string name="blurb_4">Reads a few moves ahead, fights for edges</string>
+    <string name="blurb_5">Gives no corners and chokes your moves</string>
+    <string name="blurb_6">Solves the last dozen squares exactly</string>
+
+    <!-- play -->
+    <string name="play_you">You</string>
+    <string name="play_computer">Computer · %1$s</string>
+    <string name="side_black">Black</string>
+    <string name="side_white">White</string>
+    <string name="play_your_move">Your move</string>
+    <string name="play_their_move">Their turn</string>
+    <string name="play_thinking">Thinking…</string>
+    <string name="play_flipping">Flipping…</string>
+    <string name="turn_black">Black to move</string>
+    <string name="turn_white">White to move</string>
+    <string name="play_hint">Hint</string>
+    <string name="play_hint_working">Working it out…</string>
+    <string name="play_undo">Undo</string>
+    <string name="play_mute">Mute</string>
+    <string name="play_unmute">Sound on</string>
+    <string name="play_new">New game</string>
+
+    <string name="status_turn_tip">%1$s. %2$s</string>
+    <string name="tag_drag_tip">Drag a disc onto a ring, or tap a ring</string>
+    <string name="tag_no_flip">Nothing to trap here</string>
+    <string name="tag_occupied">That square is taken</string>
+
+    <string name="pass_you">No move for you. Their turn.</string>
+    <string name="pass_them">They have no move. Go again.</string>
+    <string name="pass_2p">%1$s has no move. %2$s goes again</string>
+
+    <string name="hint_sure">Play %1$s. Read to the end, you finish %2$d up.</string>
+    <string name="hint_sure_2p">Play %1$s. Read to the end, %3$s finishes %2$d up.</string>
+    <string name="hint_sure_draw">Play %1$s. Read to the end, it\'s a draw.</string>
+    <string name="hint_unsure">Try %1$s. Looks best for now, not read to the end.</string>
+    <string name="hint_lost">This one\'s gone. %1$s loses by the least, %2$d discs.</string>
+    <string name="hint_tag_sure">Hint %1$s · %2$d up, read to the end</string>
+    <string name="hint_tag_draw">Hint %1$s · a draw, read to the end</string>
+    <string name="hint_tag_unsure">Hint %1$s · not read to the end</string>
+    <string name="hint_tag_lost">Hint %1$s · loses by %2$d at best</string>
+
+    <!-- result -->
+    <string name="result_win">You win</string>
+    <string name="result_lose">You lose</string>
+    <string name="result_draw">Draw</string>
+    <string name="result_black_wins">Black wins</string>
+    <string name="result_white_wins">White wins</string>
+    <string name="result_line">%1$s, %2$d : %3$d.</string>
+    <string name="result_full">Board\'s full.</string>
+    <string name="result_no_moves">Neither side can move.</string>
+    <string name="result_moves">%1$d moves</string>
+    <string name="result_again">Again</string>
+    <string name="result_change">Change opponent</string>
+
+    <!-- rules -->
+    <string name="rules_seg_rules">Rules</string>
+    <string name="rules_seg_how">How to play</string>
+    <string name="rules_panel_1">Trap it, flip it</string>
+    <string name="rules_panel_2">Play only the lit dots</string>
+    <string name="rules_panel_3">Most discs at the end wins</string>
+    <string name="rules_mistakes">Easy to get wrong</string>
+    <string name="mistake_1">Corners are gold. A corner disc can never be flipped back.</string>
+    <string name="mistake_2">Skip the square next to a corner. Play it and they\'ll likely take the corner.</string>
+    <string name="mistake_3">Fewer discs mid-game is fine. Having more moves is what counts.</string>
+    <string name="mistake_4">No move? It skips you. That\'s not a loss.</string>
+    <string name="rules_ok">Got it, start a game</string>
+    <string name="rules_back">Back to the game</string>
+
+    <string name="how_to_title">Hands or controller, both work</string>
+    <string name="how_to_tap_label">Tap a ring</string>
+    <string name="how_to_tap_hand">Look at a lit ring and pinch, or point your hand ray and pinch</string>
+    <string name="how_to_tap_ctrl">Controller: point at the ring, pull the trigger</string>
+    <string name="how_to_drag_label">Drag a disc</string>
+    <string name="how_to_drag_hand">Pinch your own tray, drag onto a ring, let go</string>
+    <string name="how_to_drag_ctrl">Controller: hold the trigger on your tray, drag over, release</string>
+    <string name="how_to_panel_label">Move the panel</string>
+    <string name="how_to_panel_hand">Use the system handle under the panel</string>
+    <string name="how_to_angle_label">Board angle</string>
+    <string name="how_to_angle_hand">Settings, five stops from 20° to 90°</string>
+
+    <!-- settings -->
+    <string name="set_volume">Volume</string>
+    <string name="vol_off">Off</string>
+    <string name="vol_low">Low</string>
+    <string name="vol_mid">Mid</string>
+    <string name="vol_high">High</string>
+    <string name="set_tilt">Board angle</string>
+    <string name="set_more">More settings</string>
+    <string name="set_exit">Quit app</string>
+
+    <string name="more_back">Settings</string>
+    <string name="more_lang">Language</string>
+    <string name="lang_system">System</string>
+    <string name="lang_zh">中文</string>
+    <string name="lang_en">English</string>
+    <string name="more_reopen">Reopen panel</string>
+    <string name="more_reopen_note">The panel reopens beside the board. Use the system handle under it to move it where you like.</string>
+    <string name="more_reset">Reset progress</string>
+    <string name="more_reset_note">Deletes the unfinished game. Rules show again next launch.</string>
+    <string name="more_about">Flip Disc %1$s · Sounds CC0 · Icons Material Symbols</string>
+
+    <!-- confirm cards -->
+    <string name="confirm_exit_t">Quit Flip Disc?</string>
+    <string name="confirm_exit_b">This game is saved. Pick it up next time.</string>
+    <string name="confirm_exit_y">Quit</string>
+    <string name="confirm_exit_n">Keep playing</string>
+    <string name="confirm_new_t">Drop this game?</string>
+    <string name="confirm_new_b">The current position won\'t be kept.</string>
+    <string name="confirm_new_y">New game</string>
+    <string name="confirm_new_n">Keep playing</string>
+    <string name="confirm_reset_t">Reset progress?</string>
+    <string name="confirm_reset_b">The unfinished game is deleted. Volume, language and board angle stay.</string>
+    <string name="confirm_reset_y">Reset</string>
+    <string name="confirm_reset_n">Keep it</string>
+    <string name="confirm_undo_t">%1$s wants to take one back</string>
+    <string name="confirm_undo_b">%1$s, is that OK?</string>
+    <string name="confirm_undo_y">Allow undo</string>
+    <string name="confirm_undo_n">No undo</string>
+</resources>
