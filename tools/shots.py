@@ -10,7 +10,23 @@ import glob, json, os, subprocess, sys, time
 from PIL import Image
 
 DEV = os.environ.get("DEV", "emulator-5556")
-ADB = os.environ.get("ADB_EXE") or os.path.join(os.path.expanduser("~"), "Android", "Sdk", "platform-tools", "adb.exe")
+import shutil
+
+
+def _find_adb():
+    if os.environ.get("ADB_EXE") or os.environ.get("ADB"):
+        return os.environ.get("ADB_EXE") or os.environ.get("ADB")
+    home = os.path.expanduser("~")
+    for c in (shutil.which("adb"), os.path.join(home, "Library", "Android", "sdk", "platform-tools", "adb"),
+              os.path.join(home, "Android", "Sdk", "platform-tools", "adb"),
+              os.path.join(home, "Android", "Sdk", "platform-tools", "adb.exe"),
+              os.path.join(os.environ.get("LOCALAPPDATA", ""), "Android", "Sdk", "platform-tools", "adb.exe")):
+        if c and os.path.isfile(c):
+            return c
+    return "adb"
+
+
+ADB = _find_adb()
 PKG = "io.embodit.flipdisc"
 POSES = {"reset": "", "win": "turn right 30 degrees then move forward 0.8 meters", "board": "move forward 0.9 meters"}
 # "win" frames the control window after `panelat left` (emulator default view); "both" saves the full frame + NAME-win.png

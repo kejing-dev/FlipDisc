@@ -36,9 +36,10 @@ input goes through `GameFlow.tapSquare / tapTrough / dragStart / dragMove / drag
 3D input = factory template `ui/board/input/BoardInput.kt` (D50; DragTotal sums SDK 6.1.9 per-event drag deltas) +
 `FlipTargets` / `BoardNames` (names -> square / trough, replay-tested in HitReplayTest). Animations run on wall clock (D55).
 
-## Build / test (Windows, kj-alienware)
+## Build / test (macOS kj-mbp-m5 or Windows kj-alienware)
 ```bash
-export JAVA_HOME=~/.pico/primer-cli/jdk/jdk-21.0.12.1+1 JAVA_TOOL_OPTIONS=-Djavax.net.ssl.trustStoreType=WINDOWS-ROOT
+# macOS: export JAVA_HOME=~/.pico/primer-cli/jdk/jdk-21.0.13+9/Contents/Home   (Android SDK ~/Library/Android/sdk)
+# Windows (Git Bash): export JAVA_HOME=~/.pico/primer-cli/jdk/jdk-21.0.12.1+1 JAVA_TOOL_OPTIONS=-Djavax.net.ssl.trustStoreType=WINDOWS-ROOT
 ./gradlew assembleDebug :app:testDebugUnitTest
 ./gradlew :app:testDebugUnitTest --tests '*AiStrengthTest*' -DaiStrength=true   # slow AI acceptance (M4)
 python tools/build_icon.py --icon512 ../spatial-app-factory/apps/flip-disc/icon.png

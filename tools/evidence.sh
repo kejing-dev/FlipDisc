@@ -5,7 +5,13 @@
 # Run from the project root after the final build. DEV=emulator-5556.
 set -u
 DEV="${DEV:-emulator-5556}"; export DEV
-ADB="${ADB:-$HOME/Android/Sdk/platform-tools/adb.exe}"
+if [ -z "${ADB:-}" ]; then
+  for c in "$(command -v adb 2>/dev/null)" "$HOME/Library/Android/sdk/platform-tools/adb" "$HOME/Android/Sdk/platform-tools/adb" "$HOME/Android/Sdk/platform-tools/adb.exe"; do
+    [ -n "$c" ] && [ -x "$c" ] && ADB="$c" && break
+  done
+fi
+ADB="${ADB:-adb}"; export ADB
+PY="${PY:-$(command -v python3 || command -v python)}"
 B=../spatial-app-factory/apps/flip-disc/build
 V=$B/${VERDIR:-v010}
 PLAN="${1:-}"
@@ -19,11 +25,11 @@ launch
 for i in $(seq 1 40); do "$ADB" -s "$DEV" logcat -d -s FlipDisc | grep -q "PADS + DISCS built" && break; sleep 2; done
 sleep 10
 echo '[{"name":"default-view","steps":[],"crop":"full"}]' > "$TMP/p0.json"
-python tools/shots.py "$B" "$TMP/p0.json"
+"$PY" tools/shots.py "$B" "$TMP/p0.json"
 echo '[{"name":"first-screen","steps":[["sleep",3]],"crop":"full"}]' > "$TMP/p1.json"
-python tools/shots.py "$B" "$TMP/p1.json"
+"$PY" tools/shots.py "$B" "$TMP/p1.json"
 tools/fd.sh panelat left; sleep 9
-[ -n "$PLAN" ] && python tools/shots.py "$V" "$PLAN"
+[ -n "$PLAN" ] && "$PY" tools/shots.py "$V" "$PLAN"
 "$ADB" -s "$DEV" logcat -d -s FlipDisc > "$V/logcat.txt"
 echo "OVERFLOW lines: $(grep -c OVERFLOW "$V/logcat.txt")"
 grep BLANK "$V/logcat.txt" | awk '{print $6, $7, $9}' | sort -u > "$V/blank.txt"
@@ -32,7 +38,7 @@ grep BLANK "$V/logcat.txt" | awk '{print $6, $7, $9}' | sort -u > "$V/blank.txt"
 # S00: keep the loading stand-in 10 s on the next launch
 tools/fd.sh s00hold on; launch; sleep 6
 echo '[{"name":"S00","steps":[],"crop":"full"}]' > "$TMP/p2.json"
-python tools/shots.py "$V" "$TMP/p2.json"
+"$PY" tools/shots.py "$V" "$TMP/p2.json"
 tools/fd.sh s00hold off; sleep 16
 # quit through the real path (the confirm card's own exit lambda), then the recents dump
 tools/fd.sh goto "S10 exit"; sleep 5; tools/fd.sh confirm; sleep 6
